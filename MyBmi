@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #f4f4f9, #e8f6f8);
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #007bff;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      font-size: 18px;
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result, .guidance, .diet-plan {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .result {
+      background-color: #f0f8ff;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .guidance {
+      background-color: #f9f1f0;
+      color: #333;
+      font-size: 18px;
+    }
+    .guidance.underweight {
+      border-left: 5px solid #ffa500;
+    }
+    .guidance.overweight, .guidance.obesity {
+      border-left: 5px solid #ff4500;
+    }
+    .guidance.normal {
+      border-left: 5px solid #28a745;
+    }
+    .diet-plan {
+      background-color: #e7f5ed;
+      color: #333;
+      font-size: 18px;
+    }
+    .diet-plan h3 {
+      margin-bottom: 10px;
+      color: #28a745;
+      font-weight: bold;
+    }
+    .diet-plan ul {
+      padding-left: 20px;
+    }
+    .diet-plan ul li {
+      margin-bottom: 10px;
+    }
+    .diet-plan ul li span {
+      font-weight: bold;
+      color: #007bff;
+    }
+    .instructions {
+      margin: 15px 0;
+      padding: 15px;
+      background: #f4f4f9;
+      border-radius: 8px;
+    }
+    .instructions ol {
+      padding-left: 20px;
+    }
+    .instructions ol li {
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    .welcome {
+      text-align: center;
+      font-size: 24px;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+    .intro {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: #555;
+    }
+    .bmi-categories {
+      margin-top: 20px;
+      font-size: 16px;
+      background-color: #f0f8ff;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .bmi-categories ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .bmi-categories ul li {
+      margin-bottom: 10px;
+    }
+    .bmi-categories h3 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Welcome Section -->
+    <div class="welcome">
+      <p>Welcome to the BMI Calculator!</p>
+    </div>
+
+    <!-- Intro Section -->
+    <div class="intro">
+      <p>Body Mass Index (BMI) is a useful tool to determine whether your weight is healthy in relation to your height. Calculate your BMI and get a personalized health plan.</p>
+    </div>
+
+    <div class="instructions">
+      <h2>Instructions</h2>
+      <ol>
+        <li>Select your **Measurement System** from the dropdown.</li>
+        <li>Enter your **Weight**, **Height**, **Age**, and **Gender** in the fields provided.</li>
+        <li>Click the **"Calculate BMI"** button to get your results.</li>
+      </ol>
+    </div>
+
+    <!-- BMI Categories Section -->
+    <div class="bmi-categories">
+      <h3>BMI Categories:</h3>
+      <ul>
+        <li><strong>Underweight:</strong> BMI less than 18.5</li>
+        <li><strong>Normal weight:</strong> BMI between 18.5 and 24.9</li>
+        <li><strong>Overweight:</strong> BMI between 25 and 29.9</li>
+        <li><strong>Obesity:</strong> BMI 30 or more</li>
+      </ul>
+    </div>
+
+    <label for="system">Select Measurement System:</label>
+    <select id="system" onchange="toggleInputs()">
+      <option value="metric">Metric (kg, cm)</option>
+      <option value="imperial">Imperial (lbs, inches)</option>
+    </select>
+
+    <label for="height">Height:</label>
+    <input type="number" id="height" placeholder="Enter height">
+
+    <label for="weight">Weight:</label>
+    <input type="number" id="weight" placeholder="Enter weight">
+
+    <!-- Age and Gender Fields -->
+    <label for="age">Age:</label>
+    <input type="number" id="age" placeholder="Enter your age">
+
+    <label for="gender">Gender:</label>
+    <select id="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+
+    <button onclick="calculateBMI()">Calculate BMI</button>
+
+    <div class="result" id="result"></div>
+    <div class="guidance" id="guidance"></div>
+    <div class="diet-plan" id="dietPlan"></div>
+  </div>
+
+  <script>
+    function toggleInputs() {
+      const system = document.getElementById("system").value;
+      const weightInput = document.getElementById("weight");
+      const heightInput = document.getElementById("height");
+
+      if (system === "metric") {
+        weightInput.placeholder = "Enter weight in kg";
+        heightInput.placeholder = "Enter height in cm";
+      } else {
+        weightInput.placeholder = "Enter weight in lbs";
+        heightInput.placeholder = "Enter height in inches";
+      }
+    }
+
+    function calculateBMI() {
+      const system = document.getElementById("system").value;
+      const weight = parseFloat(document.getElementById("weight").value);
+      const height = parseFloat(document.getElementById("height").value);
+      const age = parseInt(document.getElementById("age").value);
+      const gender = document.getElementById("gender").value;
+
+      if (!weight || !height || weight <= 0 || height <= 0 || !age || age <= 0) {
+        document.getElementById("result").textContent = "Please enter valid values.";
+        document.getElementById("guidance").textContent = "";
+        document.getElementById("dietPlan").textContent = "";
+        return;
+      }
+
+      let bmi;
+      if (system === "metric") {
+        const heightM = height / 100; // Convert height to meters
+        bmi = weight / (heightM * heightM);
+      } else {
+        bmi = (weight / (height * height)) * 703; // Formula for imperial system
+      }
+
+      bmi = bmi.toFixed(2);
+      let category = "";
+      let guidance = "";
+      let dietPlan = "";
+
+      if (bmi < 18.5) {
+        category = "Underweight";
+        guidance = "You are underweight. Aim to gain weight in a healthy way.";
+        dietPlan = `
+          <h3>Diet Plan:</h3>
+          <ul>
+            <li><span>Increase calorie intake:</span> Include high-calorie, nutritious foods like avocados, nuts, and whole grains.</li>
+            <li><span>Protein-rich foods:</span> Add chicken, fish, tofu, and lentils to your meals.</li>
+            <li><span>Healthy fats:</span> Include olive oil, butter, and nuts in your diet.</li>
+          </ul>`;
+        document.getElementById("guidance").className = "guidance underweight";
+      } else if (bmi >= 18.5 && bmi < 24.9) {
+        category = "Normal weight";
+        guidance = "You have a normal weight. Keep up the good work!";
+        dietPlan = `
+          <h3>Diet Plan:</h3>
+          <ul>
+            <li><span>Eat a variety of fruits and vegetables:</span> Ensure your meals are balanced and nutrient-rich.</li>
+            <li><span>Stay hydrated:</span> Drink plenty of water and avoid sugary beverages.</li>
+            <li><span>Exercise regularly:</span> Include both cardio and strength training in your routine.</li>
+          </ul>`;
+        document.getElementById("guidance").className = "guidance normal";
+      } else if (bmi >= 25 && bmi < 29.9) {
+        category = "Overweight";
+        guidance = "You are overweight. Focus on portion control and regular physical activity.";
+        dietPlan = `
+          <h3>Diet Plan:</h3>
+          <ul>
+            <li><span>Limit calorie intake:</span> Choose lean proteins and smaller portions.</li>
+            <li><span>Increase fiber intake:</span> Add whole grains, beans, and vegetables.</li>
+            <li><span>Be active:</span> Aim for at least 30 minutes of exercise most days of the week.</li>
+          </ul>`;
+        document.getElementById("guidance").className = "guidance overweight";
+      } else {
+        category = "Obesity";
+        guidance = "You are in the obesity range. It is essential to start a weight-loss program with professional guidance.";
+        dietPlan = `
+          <h3>Diet Plan:</h3>
+          <ul>
+            <li><span>Focus on vegetables:</span> Choose low-calorie, nutrient-dense foods like leafy greens and cruciferous vegetables.</li>
+            <li><span>Limit processed foods:</span> Avoid sugary snacks, fried foods, and sugary drinks.</li>
+            <li><span>Increase physical activity:</span> Include at least 150 minutes of moderate-intensity exercise each week.</li>
+          </ul>`;
+        document.getElementById("guidance").className = "guidance obesity";
+      }
+
+      document.getElementById("result").textContent = `Your BMI is ${bmi} (${category})`;
+      document.getElementById("guidance").innerHTML = guidance;
+      document.getElementById("dietPlan").innerHTML = dietPlan;
+    }
+  </script>
+</body>
+</html>
